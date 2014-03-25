@@ -12,7 +12,8 @@ MSpider
 **2. 整体结构**
 
 　　分为引擎搜索线程、爬虫线程和垃圾回收线程、数据库模块和任务队列4部分。
-![](https://raw.githubusercontent.com/wo4li2wang/MSpider/master/pic/pic.jpg)
+　　![](https://raw.githubusercontent.com/wo4li2wang/MSpider/master/pic/pic2.jpg)
+
 
 　　**引擎搜索线程**采用单例模式，可以利用上述4中搜索引擎输入关键字得到结果，并将结果以一种特殊的数据结构放入任务队列中。引擎搜索线程用于获得爬虫种子，它受垃圾回收线程的控制。在队列任务不多的情况下利用site:host语句在各个引擎中搜索模型中host评分最高的网址，获得关联度更强的种子供爬虫使用。
 
@@ -42,7 +43,7 @@ com.td1madao.gui.NoGui命令行启动
 
 gui效果如图
 
-![](https://raw.githubusercontent.com/wo4li2wang/MSpider/master/pic/pic2.jpg)
+![](https://raw.githubusercontent.com/wo4li2wang/MSpider/master/pic/pic.jpg)
 
 如果觉得功能不够，可以在com.td1madao.global.GlobalVar下修改默认配置，如线程数量、算法等级、请求次数、任务队列长度等等。
 <br /><br />这个引擎的制作完全是出自个人的兴趣，程序结构、模型设计，算法设计和代码实现均个人完成，有的地方代码还不是很规范，很多设计模式也没有灵活运用上，希望大家不要笑话我o(╯□╰)o<br /><br /><br /><br />
