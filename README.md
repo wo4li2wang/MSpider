@@ -11,7 +11,7 @@ MSpider
 
 **2. 整体结构**
 
-　　分为引擎搜索线程、爬虫线程和垃圾回收线程、数据库模块和任务队列4部分。
+　　分为引擎搜索线程、爬虫线程和垃圾回收线程、数据库模块和任务队列4部分。这里自己画了个大致的结构图，如下：
 　　![](https://raw.githubusercontent.com/wo4li2wang/MSpider/master/pic/pic2.jpg)
 
 
