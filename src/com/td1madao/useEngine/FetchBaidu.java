@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.jsoup.Jsoup;  
 import org.jsoup.nodes.Document;
 
+import com.td1madao.bean.KeyWord;
 import com.td1madao.filters.fetchUrlUtil;
 import com.td1madao.global.GlobalVar;
 import com.td1madao.stringUtil.MyStringUtil;
@@ -72,13 +73,13 @@ public class FetchBaidu {
 	 * ËÑË÷ÒýÇæµÄ¹Ø¼ü´Ê
 	 * */
 	private static String getKeySerials() {
-		String[] keyword = GlobalVar.keyStrings.clone();
+		KeyWord[] keyword = GlobalVar.keyStrings.clone();
 		StringBuffer keyComb=new StringBuffer();
 		for (int i = 0; i < keyword.length-1; i++) {
-			keyComb.append(keyword[i]);
+			keyComb.append(keyword[i].getName());
 			keyComb.append('+');
 		}
-		keyComb.append(keyword[keyword.length-1]);
+		keyComb.append(keyword[keyword.length-1].getName());
 		return keyComb.toString();
 	}
 	
@@ -87,9 +88,9 @@ public class FetchBaidu {
 		 * ÎÒ²â£¡
 		 */
 		public static void main(String[] args) {
-			GlobalVar.keyStrings=new String[]{"°¢Àï°Í°Í","ÂíÔÆ"};
-				work(null);
-				System.out.println(GlobalVar.urlStore);
-				System.out.println(GlobalVar.urlStore.size());
+//			GlobalVar.keyStrings=new String[]{"°¢Àï°Í°Í","ÂíÔÆ"};
+//				work(null);
+//				System.out.println(GlobalVar.urlStore);
+//				System.out.println(GlobalVar.urlStore.size());
 		}
 }

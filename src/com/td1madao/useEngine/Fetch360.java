@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.jsoup.Jsoup;  
 import org.jsoup.nodes.Document;
 
+import com.td1madao.bean.KeyWord;
 import com.td1madao.filters.fetchUrlUtil;
 import com.td1madao.global.GlobalVar;
 
@@ -68,13 +69,13 @@ public class Fetch360 {
 	 * ËÑË÷ÒýÇæµÄ¹Ø¼ü´Ê
 	 * */
 	private static String getKeySerials() {
-		String[] keyword = GlobalVar.keyStrings.clone();
+		KeyWord[] keyword = GlobalVar.keyStrings.clone();
 		StringBuffer keyComb=new StringBuffer();
 		for (int i = 0; i < keyword.length-1; i++) {
-			keyComb.append(keyword[i]);
+			keyComb.append(keyword[i].getName());
 			keyComb.append('+');
 		}
-		keyComb.append(keyword[keyword.length-1]);
+		keyComb.append(keyword[keyword.length-1].getName());
 		return keyComb.toString();
 	}
 	
@@ -83,9 +84,9 @@ public class Fetch360 {
 		 * ÎÒ²â£¡
 		 */
 		public static void main(String[] args) {
-			GlobalVar.searchNum=20;//ÈÃ360ËÑË÷ÕÒ20¸ö
-			System.out.println("fetch360");
-			GlobalVar.keyStrings=new String[]{"°¢Àï°Í°Í","ÂíÔÆ"};
-				System.out.println(work(null).size());
+//			GlobalVar.searchNum=20;//ÈÃ360ËÑË÷ÕÒ20¸ö
+//			System.out.println("fetch360");
+//			GlobalVar.keyStrings=new String[]{"°¢Àï°Í°Í","ÂíÔÆ"};
+//				System.out.println(work(null).size());
 		}
 }

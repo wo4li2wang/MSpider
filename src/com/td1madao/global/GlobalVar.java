@@ -3,6 +3,7 @@ package com.td1madao.global;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.td1madao.bean.KeyWord;
 import com.td1madao.bean.UrlScoreBean;
 
 /**
@@ -24,7 +25,7 @@ public class GlobalVar {
 	// 这东东是存储第一次引擎获得的URL用的！后期打算多个引擎一起添加
 	public static List<UrlScoreBean> beanList = new ArrayList<UrlScoreBean>();
 	// 存储URL和评分，后面会对host排序
-	public static String[] keyStrings = null;
+	public static KeyWord[] keyStrings = null;//搜索的关键词
 	public static String username = "root";// 数据库
 	public static String password = "123456";
 	public static String db = "jdbc:mysql://127.0.0.1:3306/mspider";

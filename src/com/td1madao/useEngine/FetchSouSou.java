@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.jsoup.Jsoup;  
 import org.jsoup.nodes.Document;
 
+import com.td1madao.bean.KeyWord;
 import com.td1madao.filters.fetchUrlUtil;
 import com.td1madao.global.GlobalVar;
 
@@ -70,13 +71,13 @@ public class FetchSouSou {
 	 * 搜索引擎的关键词
 	 * */
 	private static String getKeySerials() {
-		String[] keyword = GlobalVar.keyStrings.clone();
+		KeyWord[] keyword = GlobalVar.keyStrings.clone();
 		StringBuffer keyComb=new StringBuffer();
 		for (int i = 0; i < keyword.length-1; i++) {
-			keyComb.append(keyword[i]);
+			keyComb.append(keyword[i].getName());
 			keyComb.append('+');
 		}
-		keyComb.append(keyword[keyword.length-1]);
+		keyComb.append(keyword[keyword.length-1].getName());
 		return keyComb.toString();
 	}
 	
@@ -85,11 +86,11 @@ public class FetchSouSou {
 		 * 我测！
 		 */
 		public static void main(String[] args) {
-			GlobalVar.searchNum=20;//让搜搜找20个
-			System.out.println("fetch搜搜");
-			GlobalVar.keyStrings=new String[]{"阿里巴巴","马云"};//每次测试都搜阿里巴巴呢，马云叔叔不会生气吧？
-			ArrayList<String>aList=work(null);
-				System.out.println(aList);
-				System.out.println(aList.size());
+//			GlobalVar.searchNum=20;//让搜搜找20个
+//			System.out.println("fetch搜搜");
+//			GlobalVar.keyStrings=new String[]{"阿里巴巴","马云"};//每次测试都搜阿里巴巴呢，马云叔叔不会生气吧？
+//			ArrayList<String>aList=work(null);
+//				System.out.println(aList);
+//				System.out.println(aList.size());
 		}
 }

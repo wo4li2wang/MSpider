@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -95,7 +96,7 @@ public MyFrame() {
 	});
 	setTitle("天地一MADAO小工具");
 	
-	keyWord.setText("JAVA 本科生 暑假 实习 2014");
+	keyWord.setText("JAVA 本科生 暑假 实习(4,true) 2014");
 	p1.setLayout(new BorderLayout());
 	p1.add(keyWordJLabel,BorderLayout.NORTH);
 	p1.add(keyWord);
@@ -133,7 +134,11 @@ public MyFrame() {
 			} 
 			else
 			{
-				NoGui.getInstance().init(keyWord.getText().split(" "));
+				boolean b=NoGui.getInstance().init(keyWord.getText());
+				if (!b) {
+					JOptionPane.showConfirmDialog(null, "你输入的表达式不合法！","提示:", JOptionPane.OK_OPTION);
+					return;
+				}
 				NoGui.getInstance().start();
 				alreadyrun=true;
 				yesButton.setText("暂停");
@@ -207,7 +212,7 @@ public MyFrame() {
 	p2.add(database);
 	p2.add(yesButton);
 	add(p2);
-	Trace("使用方法：\n确定你的数据库是存在的！\n，输入关键词、账户、密码、数据库名、爬信息！\n");
+	Trace("使用方法：\n确定你的数据库是存在的！\n，输入关键词、账户、密码、数据库名、爬信息！\n技巧:通过括号可以定义关键词的权重和是否必须存在 \n\n比如\"JAVA 本科生 暑假 实习(4,true) 2014\"\n\n表示实习的权重为4，且必须在文章中出现,默认词的权重为1\n格式务必要正确，括号内只能为(正实数,[true/false])");
 	setVisible(true);
 	repaint();
 }

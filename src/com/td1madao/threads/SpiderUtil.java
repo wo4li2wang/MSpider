@@ -26,8 +26,8 @@ public static UrlScoreBean work(final String url) {
 	
 }
 public static void main(String[] args) {
-	GlobalVar.keyStrings=new String[]{"地狱少女","阎魔爱"};//╮(╯▽╰)╭ 尽显我大叔本性啊
-	System.out.print(work("http://baike.baidu.com/subview/8773/7380728.htm?fr=aladdin"));
+//	GlobalVar.keyStrings=new String[]{"地狱少女","阎魔爱"};//╮(╯▽╰)╭ 尽显我大叔本性啊
+//	System.out.print(work("http://baike.baidu.com/subview/8773/7380728.htm?fr=aladdin"));
 	//没啥问题，爬到了所有的链接，后面过滤掉和 地狱少女没啥关系的就O了
 }
 }
