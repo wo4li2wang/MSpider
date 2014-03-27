@@ -1,21 +1,17 @@
 package com.td1madao.bean;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 
-import com.td1madao.math.ListProcess;
 import com.td1madao.stringUtil.MyStringUtil;
 
 /**
  * 名字虽然蛋疼了点，但是它是用来存放URL和关联系数的结构 大致是这个意思，虽然意义上不叫bean了
  * */
 public class UrlScoreBean implements Comparable<UrlScoreBean> {
-	public UrlScoreBean(double score, String url,ArrayList<String> child) {
+	public UrlScoreBean(double score, String url,HashSet<String> child,int childLevel) {
 		this.score = score;
 		this.url = url;
-		
-		if (child!=null) {//其实所有超链接空也没关系
-		ListProcess.removeDuplicate(child);//出去重复的子链接
-		}
+		this.setChildLevel(childLevel);
 		this.child=child;
 		host = MyStringUtil.getHost(url);
 	}
@@ -23,7 +19,8 @@ public class UrlScoreBean implements Comparable<UrlScoreBean> {
 	private double score = 0;// 关联系数
 	private String url = "";// URL
 	private String host = "";// host
-	public ArrayList<String> child = null;// 所有内部的链接
+	private int childLevel = 0;// 第几层
+	public HashSet<String> child = null;// 所有内部的链接
 
 	public double getScore() {
 		return score;
@@ -63,8 +60,17 @@ public class UrlScoreBean implements Comparable<UrlScoreBean> {
 	public void setHost(String host) {
 		this.host = host;
 	}
+	
+
+	public int getChildLevel() {
+		return childLevel;
+	}
+
+	public void setChildLevel(int childLevel) {
+		this.childLevel = childLevel;
+	}
 	public static void main(String[] args) {
-		UrlScoreBean uBean=new UrlScoreBean(3, "www.hehe.com", null);
-		System.out.println(uBean.getHost());
+//		UrlScoreBean uBean=new UrlScoreBean(3, "www.hehe.com", null);
+//		System.out.println(uBean.getHost());
 	}
 }

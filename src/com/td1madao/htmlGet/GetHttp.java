@@ -4,19 +4,20 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 
 import org.jsoup.Connection;
-import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import com.td1madao.bean.JsoupBean;
+import com.td1madao.filters.FiltTag;
 import com.td1madao.filters.fetchUrlUtil;
 import com.td1madao.global.GlobalVar;
+import com.td1madao.gui.MyFrame;
 import com.td1madao.stringUtil.MyStringUtil;
 
 
@@ -103,9 +104,28 @@ public static JsoupBean workByClient(final String url){
 	for (int i = 0; i < GlobalVar.tryTime; i++) {
 		
 	try{
+	
+		
+		
 	Connection connection=Jsoup.connect(url);
+	connection.header("Host",MyStringUtil.getHost(url));
+	connection.header("Proxy-Connection", "keep-alive");
+	connection.header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
+	connection.header("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36");
+	connection.header("Accept-Encoding", "gzip,deflate,sdch");
+	connection.header("Accept-Language", "zh-CN,zh;q=0.8");
 	doc = connection.get(); //用Document记录页面信息，和CHROME那玩儿意挺像的
-ArrayList<String> al=new ArrayList<String>();	
+	
+	
+	String willret=doc.toString();
+	
+	if (willret==null||willret.length()<=0) {
+		MyFrame.Trace(">>>源代码:访问不了我也没辙！！");
+		return new JsoupBean(null, null, null);
+	}
+	willret=FiltTag.work(MyStringUtil.deletEnter(willret));
+	MyFrame.Trace(">>>源代码:"+willret);
+	HashSet<String> al=new HashSet<String>();	
 	 Element body = doc.body();
 	  Elements es=body.select("a");
 	  for (Iterator<Element> it = es.iterator(); it.hasNext();) {
@@ -118,13 +138,12 @@ ArrayList<String> al=new ArrayList<String>();
 	  
 	temp=connection.response().url().toString();//情况一：肚熊玩重定向
 	if (temp.equals(url)) {//情况一：肚熊用js玩重定向
-		String testRedirect=MyStringUtil.deletEnter(doc.toString());
+		String testRedirect=MyStringUtil.deletEnter(willret);
 		if (testRedirect.contains("window.location.replace")) {
 			temp=fetchUrlUtil.work(testRedirect);
 		}
 	}
-	return new JsoupBean(doc.toString(), temp, al);
-	}catch(HttpStatusException e){
+	return new JsoupBean(willret, temp, al);
 	}
 	catch(Exception e){
 	}

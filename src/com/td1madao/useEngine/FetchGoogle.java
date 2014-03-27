@@ -34,14 +34,21 @@ public class FetchGoogle {
 		int urlPage=0;//肚熊的第几页
 		String elementString = null;//js提取的元素
 		String key=null;
-		if (host!=null) {
-			key="site%3A"+host+"%20"+getKeySerials();
-		}else {
-			key=getKeySerials();
-		}
+		if (GlobalVar.searchCont==null) {
+			
+			if (host!=null) {
+				key="site%3A"+host+"%20"+getKeySerials();
+			}else {
+				key=getKeySerials();
+			}
+			}else {
+				key=GlobalVar.searchCont;
+			}
+			
 		while (true) {
 		String threadUrl ="http://www.google.com.hk/search?q="+key+"&start="+(urlPage*10);
-		System.out.println(threadUrl);
+		MyFrame.Trace("谷歌搜索："+threadUrl);
+		urlPage++;//翻页
 		try{
 			Connection conn=Jsoup.connect(threadUrl);
 			conn.header("Host", "www.google.com.hk");
@@ -53,8 +60,9 @@ public class FetchGoogle {
 			Document doc=null ;
 			try{
 		 doc = (Document)conn.get(); //用Document记录页面信息，和CHROME那玩儿意挺像的
-			}catch(Exception e){
-				MyFrame.Trace("谷歌检测出流量异常，需要输入验证码，建议关闭谷歌搜索引擎");
+			}
+			catch(Exception e){
+				MyFrame.Trace("谷歌君发现你在爬他，所以很小气的把你拒之门外！");
 				return null;
 			}
 		for (int i = 0; i < GlobalVar.baiduNum; i++) {
@@ -72,10 +80,10 @@ public class FetchGoogle {
 		if (getURLNum>=GlobalVar.searchNum) {
 			break;
 		}
-		else {
-			urlPage++;//翻页
-		}
 		
+		}catch(NullPointerException e){
+			MyFrame.Trace("谷歌找不到你想要的，不信你谷歌试试！");
+			return null;
 		}catch(Exception e){
 			e.printStackTrace();
 		}

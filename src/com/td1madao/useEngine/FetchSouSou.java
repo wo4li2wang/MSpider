@@ -8,6 +8,7 @@ import org.jsoup.nodes.Document;
 import com.td1madao.bean.KeyWord;
 import com.td1madao.filters.fetchUrlUtil;
 import com.td1madao.global.GlobalVar;
+import com.td1madao.gui.MyFrame;
 
 
 
@@ -27,15 +28,25 @@ public class FetchSouSou {
 		int urlPage=0;//肚熊的第几页
 		String elementString = null;//js提取的元素
 		String key=null;
-		if (host!=null) {
-			key="site%3A"+host+"%20"+getKeySerials();
-		}else {
-			key=getKeySerials();
-		}
+		if (GlobalVar.searchCont==null) {
+			
+			if (host!=null) {
+				key="site%3A"+host+"%20"+getKeySerials();
+			}else {
+				key=getKeySerials();
+			}
+			}else {
+				key=GlobalVar.searchCont;
+			}
+			
 		while (true) {
 		String threadUrl ="http://www.soso.com/q?query="+key+"&pg="+(urlPage+1);
+		MyFrame.Trace("搜搜搜索："+threadUrl);
+		urlPage++;//翻页
 		try{
-			Document doc = (Document)Jsoup.connect(threadUrl).get(); //用Document记录页面信息，和CHROME那玩儿意挺像的
+			Document doc = null;
+			
+				doc = (Document)Jsoup.connect(threadUrl).get(); //用Document记录页面信息，和CHROME那玩儿意挺像的
 			for (int i = 0; i < GlobalVar.baiduNum; i++) {
 				elementString=doc.getElementsByClass("rb").toString();//搜索到的代码
 //						Id(String.valueOf(getURLNum+1)).toString();
@@ -55,10 +66,10 @@ public class FetchSouSou {
 			if (ret.size()>=GlobalVar.searchNum) {
 				break;
 			}
-			else {
-				urlPage++;//翻页
-			}
 			
+			}catch(NullPointerException e){
+				MyFrame.Trace("搜搜君找不到你想要的，不信你搜搜试试！");
+				return null;
 			}catch(Exception e){
 			e.printStackTrace();
 		}

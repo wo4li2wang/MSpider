@@ -43,10 +43,12 @@ return density;
 public static int calTime(final String str,final KeyWord str1) {
 	int count = 0;
 	int start = 0;
-	while (str.indexOf(str1.getName(), start) >= 0 && start < str.length()) {
+	while (str.indexOf(str1.getName().replaceAll("\"", ""), start) >= 0 && start < str.length()) {
 		count++;
-		start = str.indexOf(str1.getName(), start) + str1.getName().length();
+		start = str.indexOf(str1.getName().replaceAll("\"", ""), start) + str1.getName().replaceAll("\"", "").length();
 	}
+	
+	
 	return count;
 }
 public static void main(String[] args) {

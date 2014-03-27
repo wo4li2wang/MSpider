@@ -8,6 +8,7 @@ import org.jsoup.nodes.Document;
 import com.td1madao.bean.KeyWord;
 import com.td1madao.filters.fetchUrlUtil;
 import com.td1madao.global.GlobalVar;
+import com.td1madao.gui.MyFrame;
 import com.td1madao.stringUtil.MyStringUtil;
 
 
@@ -33,15 +34,25 @@ public class FetchBaidu {
 		int urlPage=0;//肚熊的第几页
 		String elementString = null;//js提取的元素
 		String key=null;
-		if (host!=null) {
-			key="site%3A"+host+"%20"+getKeySerials();
-		}else {
-			key=getKeySerials();
-		}
+		if (GlobalVar.searchCont==null) {
+			
+			if (host!=null) {
+				key="site%3A"+host+"%20"+getKeySerials();
+			}else {
+				key=getKeySerials();
+			}
+			}else {
+				key=GlobalVar.searchCont;
+			}
+			
 		while (true) {
 		String threadUrl ="http://www.baidu.com/s?wd="+key+"&pn="+(urlPage*10);
+		MyFrame.Trace("百度搜索："+threadUrl);
+		urlPage++;//翻页
 		try{
-		Document doc = (Document)Jsoup.connect(threadUrl).get(); //用Document记录页面信息，和CHROME那玩儿意挺像的
+				Document doc=null; 
+				doc = (Document)Jsoup.connect(threadUrl).get(); //用Document记录页面信息，和CHROME那玩儿意挺像的
+				
 		for (int i = 0; i < GlobalVar.baiduNum; i++) {
 			elementString=doc.getElementById(String.valueOf(getURLNum+1)).toString();
 			elementString=MyStringUtil.deletEnter(elementString);//√
@@ -57,12 +68,13 @@ public class FetchBaidu {
 		if (getURLNum>=GlobalVar.searchNum) {
 			break;
 		}
-		else {
-			urlPage++;//翻页
-		}
+			
 		
+		}catch(NullPointerException e){
+			MyFrame.Trace("肚熊找不到你想要的，肚下你就知道！");
+			return null;
 		}catch(Exception e){
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 		
 		}//end while

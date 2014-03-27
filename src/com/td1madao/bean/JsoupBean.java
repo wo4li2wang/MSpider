@@ -1,6 +1,6 @@
 package com.td1madao.bean;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 /**
  * 这个数据结构是个临时变量，请尽可能无视它
  * 
@@ -10,8 +10,8 @@ import java.util.ArrayList;
 public class JsoupBean {
 private String article=null;
 private String changeURL=null;
-public ArrayList<String> child=null;
-public JsoupBean(String article,String changeURL,ArrayList<String>child) {
+public HashSet<String> child=null;
+public JsoupBean(String article,String changeURL,HashSet<String>child) {
 	this.setArticle(article);
 	this.setChangeURL(changeURL);
 	this.child=child;

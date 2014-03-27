@@ -12,7 +12,9 @@ public class MyStringUtil {
 	 * */
 	public static String deletEnter(final String string) {
 		if (string!=null) {
-			return string.replaceAll("[\\t\\n\\r]", "");
+			String temp= string.replaceAll(" ", "");
+			 temp= temp.replaceAll("\t", "");
+			return temp.replaceAll("[\\t\\n\\r]", "");
 		}
 		return null;
 	}

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 import com.td1madao.bean.KeyWord;
+import com.td1madao.filters.URLTool;
 import com.td1madao.global.GlobalVar;
 import com.td1madao.global.TaskQueue;
 import com.td1madao.threads.DaemonThread;
@@ -84,15 +85,26 @@ private static NoGui uniqueInstance = new NoGui();
 			GlobalVar.keyStrings=args2.clone();
 		}
 		
+		String []temp=GlobalVar.seed.split(",");
+		for (int i = 0; i < temp.length; i++) {
+			temp[i]=temp[i].trim();
+			if (URLTool.isURL(temp[i])) {
+				MEngine.al.clear();
+				MEngine.al.add(temp[i]);
+			}
+		}
+		
 		MEngine.getInstance().run();//这个是为了初始化得种子，千万不要start哦！
 		if (TaskQueue.getInstance().size()==0) {
-			JOptionPane.showConfirmDialog(null, "搜索失败！如果你用的是谷歌，请换用别的引擎试试！","提示:", JOptionPane.OK_OPTION);
+			JOptionPane.showConfirmDialog(null, "搜索失败，建议你添加一些相关页面URL。","提示:", JOptionPane.OK_OPTION);
+			try {MyFrame.fwFileWriter.close();MyFrame.bWriter.close();} catch (Exception e2) {}
 			System.exit(0);
 		}
+		GlobalVar.searchCont=null;//切换为智能搜索
+		GlobalVar.init=false;//已经初始化了
 		MyFrame.yesButton.setEnabled(true);
 //		System.out.println("得到了"+TaskQueue.getInstance().size()+"个种子链接！");
 		MyFrame.Trace("得到了"+TaskQueue.getInstance().size()+"个种子链接！");
-		MEngine.getInstance().start();
 		MEngine.getInstance().flag=false;
 	    
 	    for (int i = 0; i < array.length; i++) {
@@ -105,7 +117,7 @@ private static NoGui uniqueInstance = new NoGui();
 
 	public static void notifys() {
 		// TODO Auto-generated method stub
-		array[0].toNotify();
+		MSpider.toNotify();
 		MEngine.getInstance().toNotify();
 		 DaemonThread.getInstance().toNotify();
 	}

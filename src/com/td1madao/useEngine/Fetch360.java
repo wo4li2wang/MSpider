@@ -8,6 +8,7 @@ import org.jsoup.nodes.Document;
 import com.td1madao.bean.KeyWord;
 import com.td1madao.filters.fetchUrlUtil;
 import com.td1madao.global.GlobalVar;
+import com.td1madao.gui.MyFrame;
 
 
 
@@ -22,18 +23,32 @@ public class Fetch360 {
 	public static ArrayList<String> work(String host){
 		
 		ArrayList<String> ret=new ArrayList<String>();
-		int urlPage=0;//肚熊的第几页
-		String elementString = null;//js提取的元素
+		int urlPage=0;
+		String elementString = null;
 		String key=null;
+		if (GlobalVar.searchCont==null) {
+			
 		if (host!=null) {
 			key="site%3A"+host+"%20"+getKeySerials();
 		}else {
 			key=getKeySerials();
 		}
+		}else {
+			key=GlobalVar.searchCont;
+		}
+		
+		
 		while (true) {
-		String threadUrl ="http://so.360.cn/s?q="+key+"&pn=1"+(urlPage+1);
+			int retL=ret.size();
+		String threadUrl ="http://so.360.cn/s?q="+key+"&pn="+(urlPage+1);
+		MyFrame.Trace("360搜索："+threadUrl);
+		urlPage++;//翻页
 		try{
-		Document doc = (Document)Jsoup.connect(threadUrl).get(); //用Document记录页面信息，和CHROME那玩儿意挺像的
+		Document doc = null;
+			doc = (Document)Jsoup.connect(threadUrl).get(); //用Document记录页面信息，和CHROME那玩儿意挺像的
+			
+		
+		
 		for (int i = 0; i < GlobalVar.baiduNum; i++) {
 			elementString=doc.getElementsByClass("res-title").toString();//搜索到的代码
 //					Id(String.valueOf(getURLNum+1)).toString();
@@ -50,13 +65,18 @@ public class Fetch360 {
 			ret.addAll(ansArrayList);
 		
 		}//end for
+		if (ret.size()==retL) {
+			break;	
+		}
+
+		
 		if (ret.size()>=GlobalVar.searchNum) {
 			break;
 		}
-		else {
-			urlPage++;//翻页
-		}
 		
+		}catch(NullPointerException e){
+			MyFrame.Trace("360君找不到你想要的，不信你360试试！");
+			return null;
 		}catch(Exception e){
 			e.printStackTrace();
 		}

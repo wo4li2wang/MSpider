@@ -1,5 +1,7 @@
 package com.td1madao.threads;
 
+import javax.swing.JOptionPane;
+
 import com.td1madao.global.GlobalVar;
 import com.td1madao.global.TaskQueue;
 import com.td1madao.gui.MyFrame;
@@ -23,6 +25,7 @@ import com.td1madao.gui.MyFrame;
 public class DaemonThread extends Thread {
 	int taskNum=0;
 int queueLen=0;
+boolean stop=false;
 private static Object obj = new Object();
 	private static DaemonThread uniqueInstance = new DaemonThread();
 	private DaemonThread(){}
@@ -50,7 +53,8 @@ private static Object obj = new Object();
 			}
 			queueLen=TaskQueue.getInstance().size();
 			double percentage=(double)queueLen/GlobalVar.queueLength;
-			if (percentage<=0.2) {//任务太少
+			if (percentage<=0.2&&GlobalVar.maxHost!=null) {//任务太少
+				MyFrame.Trace("存在最大host"+GlobalVar.maxHost);
 				//启动引擎线程，降低成本
 				try {
 					MEngine.getInstance().start();//尝试启动引擎
@@ -58,12 +62,22 @@ private static Object obj = new Object();
 				}
 				GlobalVar.filterScore=0;
 			}else if (percentage<=0.5) {
+				MSpider.toNotify();//任务多了就唤醒线程
 				//关闭引擎线程
 				MEngine.getInstance().flag=false;//共享变量，自生自灭
 			}else if(percentage>=0.9){
+				MSpider.toNotify();//任务多了就唤醒线程
 				//提高成本，清理垃圾任务
 				GlobalVar.filterScore=TaskQueue.getInstance().getHigherQuality();
 				//其实也可以考虑给队列扩容，当然是我后面的打算了
+			}
+			for (int i = 0; i < GlobalVar.spiderState.length; i++) {
+				stop|=GlobalVar.spiderState[i];
+			}
+			if (stop) {
+				JOptionPane.showConfirmDialog(null, "实在爬不到相关的了，想要更多资源就填写相关URL或者修改下搜索语句","提示:", JOptionPane.OK_OPTION);
+				try {MyFrame.fwFileWriter.close();MyFrame.bWriter.close();} catch (Exception e2) {}
+				System.exit(0);
 			}
 			yield();
 			try {

@@ -4,7 +4,7 @@ package com.td1madao.bean;
  * */
 public class KeyWord {
 	
-	private String name=null;//关键词
+private String name=null;//关键词
 private double weight=0;//关键词的权重，权重越高评分越高
 private boolean necessary=false;//是否必须存在(不存在将会被过滤)
 public KeyWord(String name,double weight,boolean necessary) {
@@ -30,6 +30,7 @@ public String getName() {
 public void setName(String name) {
 	this.name = name;
 }
+
 @Override
 public String toString() {
 	return "("+name+","+weight+","+necessary+")";

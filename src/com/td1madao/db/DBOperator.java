@@ -1,7 +1,6 @@
 package com.td1madao.db;
 
 import java.sql.*;
-import java.util.ArrayList;
 
 import com.mysql.jdbc.MysqlDataTruncation;
 import com.td1madao.bean.UrlScoreBean;
@@ -124,7 +123,7 @@ public class DBOperator {
 	
 public static void main(String[] args){
 	
-DBOperator dbOperator=getInstance(); 
-dbOperator.inputRecord(new UrlScoreBean(0.3, "www.hoho.com",new ArrayList<String>()));
+//DBOperator dbOperator=getInstance(); 
+//dbOperator.inputRecord(new UrlScoreBean(0.3, "www.hoho.com",new HashSet<String>()));
 } 
 }
